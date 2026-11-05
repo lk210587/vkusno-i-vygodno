@@ -5,8 +5,34 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Вкусно и выгодно</title>
+
 <style>
-  .main-button {
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #faf8f1;
+  color: #343d2e;
+}
+
+header {
+  padding: 25px 20px;
+  background: #e8eddd;
+}
+
+h1 { margin: 0; font-size: 27px; }
+header p { margin-bottom: 0; color: #66715b; }
+
+main {
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+}
+
+h2 { font-size: 21px; }
+
+.main-button {
   display: block;
   text-align: center;
   background: #55734e;
@@ -17,26 +43,13 @@
   font-weight: bold;
   margin: 15px 0;
 }
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #faf8f1;
-  color: #343d2e;
-}
-header {
-  padding: 25px 20px;
-  background: #e8eddd;
-}
-h1 { margin: 0; font-size: 27px; }
-header p { margin-bottom: 0; color: #66715b; }
-main { padding: 20px; max-width: 600px; margin: auto; }
-h2 { font-size: 21px; }
+
 .menu {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
+
 .item {
   background: white;
   padding: 20px 12px;
@@ -45,7 +58,38 @@ h2 { font-size: 21px; }
   font-size: 15px;
   box-shadow: 0 2px 10px #00000008;
 }
+
 .icon { font-size: 30px; margin-bottom: 8px; }
+
+.welcome, .holiday-box {
+  background: white;
+  border-radius: 18px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 2px 10px #00000008;
+}
+
+.holiday-box {
+  border: 2px solid #e8eddd;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-top: 15px;
+  margin-bottom: 7px;
+}
+
+select, input {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #d5ddca;
+  border-radius: 10px;
+  font-size: 16px;
+  background: white;
+  color: #343d2e;
+}
+
 button {
   border: 0;
   background: #657b4e;
@@ -57,12 +101,20 @@ button {
   margin-top: 15px;
   cursor: pointer;
 }
-.welcome {
-  background: white;
-  border-radius: 18px;
-  padding: 20px;
+
+#holidayResult {
+  display: none;
   margin-top: 20px;
+  padding: 15px;
+  background: #f4f7ed;
+  border-radius: 12px;
+  line-height: 1.6;
 }
+
+#holidayResult h3 {
+  color: #55734e;
+}
+
 footer {
   text-align: center;
   padding: 25px;
@@ -71,22 +123,62 @@ footer {
 }
 </style>
 </head>
+
 <body>
+
 <header>
   <h1>🥑 Вкусно и выгодно</h1>
   <p>Планируй меню. Экономь. Наслаждайся!</p>
 </header>
 
 <main>
+
   <div class="welcome">
     <h2>Добро пожаловать!</h2>
     <p>Что будем готовить сегодня?</p>
-   <a href="recipes.html" class="main-button">
-  Выбрать рецепты
-</a>
+    <a href="recipes.html" class="main-button">
+      Выбрать рецепты
+    </a>
+  </div>
+
+  <div class="holiday-box">
+    <h2>🎉 Что приготовить к празднику?</h2>
+    <p>Выбери повод — подберём идеи блюд для праздничного стола!</p>
+
+    <label for="holidaySearch">Найти праздник</label>
+    <input
+      type="text"
+      id="holidaySearch"
+      list="holidayOptions"
+      placeholder="Например, Новый год или день рождения"
+    >
+
+    <datalist id="holidayOptions">
+      <option value="Новый год">
+      <option value="Рождество">
+      <option value="День рождения взрослого">
+      <option value="Детский день рождения">
+      <option value="Пасха">
+      <option value="8 Марта">
+      <option value="23 Февраля">
+      <option value="Масленица">
+      <option value="Пикник на природе">
+      <option value="Выпускной или школьный праздник">
+      <option value="Семейное застолье">
+    </datalist>
+
+    <label for="guests">Количество гостей</label>
+    <input type="number" id="guests" min="1" max="100" value="6">
+
+    <button onclick="showHolidayMenu()">
+      Подобрать праздничное меню
+    </button>
+
+    <div id="holidayResult"></div>
   </div>
 
   <h2>Моё приложение</h2>
+
   <div class="menu">
     <div class="item">
       <div class="icon">🍲</div>
@@ -113,10 +205,151 @@ footer {
       Избранное
     </div>
   </div>
+
 </main>
 
 <footer>
   Вкусно и выгодно © 2026
 </footer>
+
+<script>
+const holidayMenus = {
+  "Новый год": {
+    title: "🎄 Новогодний стол",
+    salad: ["Оливье", "Сельдь под шубой", "Салат с курицей и ананасом"],
+    snacks: ["Фаршированные яйца", "Рулет из лаваша", "Бутерброды с красной рыбой"],
+    hot: ["Запечённая курица с картофелем", "Мясо по-французски"],
+    dessert: ["Мандариновый десерт", "Торт", "Фруктовая тарелка"]
+  },
+  "Рождество": {
+    title: "✨ Рождественский стол",
+    salad: ["Винегрет", "Овощной салат", "Салат с курицей"],
+    snacks: ["Домашние пирожки", "Фаршированные яйца"],
+    hot: ["Запечённая курица", "Рыба с овощами"],
+    dessert: ["Кутья", "Пирог с яблоками", "Компот"]
+  },
+  "День рождения взрослого": {
+    title: "🎂 Праздничный стол для взрослых",
+    salad: ["Оливье", "Цезарь с курицей", "Салат с грибами"],
+    snacks: ["Рулетики из баклажанов", "Тарталетки", "Мясная нарезка"],
+    hot: ["Мясо с картофелем в духовке", "Запечённая рыба"],
+    dessert: ["Торт", "Чизкейк", "Фруктовая тарелка"]
+  },
+  "Детский день рождения": {
+    title: "🎈 Весёлый детский праздник",
+    salad: ["Фруктовый салат", "Салат с курицей", "Овощные стаканчики"],
+    snacks: ["Мини-бутерброды", "Канапе с сыром и овощами", "Домашние мини-пиццы"],
+    hot: ["Куриные шашлычки", "Картофельные дольки", "Домашние наггетсы"],
+    dessert: ["Капкейки", "Фруктовые шпажки", "Желейный десерт"],
+    extra: ["Морс", "Компот", "Домашний лимонад"]
+  },
+  "Пасха": {
+    title: "🐣 Пасхальный стол",
+    salad: ["Весенний салат", "Овощной салат"],
+    snacks: ["Крашеные яйца", "Фаршированные яйца", "Сырная тарелка"],
+    hot: ["Запечённая курица", "Мясо с овощами"],
+    dessert: ["Пасхальный кулич", "Творожная пасха"]
+  },
+  "8 Марта": {
+    title: "🌷 Праздничный стол к 8 Марта",
+    salad: ["Салат с креветками", "Цезарь", "Салат с курицей"],
+    snacks: ["Тарталетки", "Рулетики из лаваша"],
+    hot: ["Рыба в духовке", "Курица с овощами"],
+    dessert: ["Клубничный десерт", "Тирамису", "Фруктовая тарелка"]
+  },
+  "23 Февраля": {
+    title: "🎖️ Праздничный стол к 23 Февраля",
+    salad: ["Оливье", "Салат с мясом", "Салат с грибами"],
+    snacks: ["Домашние бутерброды", "Мясная нарезка"],
+    hot: ["Мясо по-французски", "Запечённые рёбрышки"],
+    dessert: ["Шоколадный торт", "Пирог"]
+  },
+  "Масленица": {
+    title: "🥞 Масленичная неделя",
+    salad: ["Овощной салат", "Салат с курицей"],
+    snacks: ["Блины с сыром", "Блины с ветчиной"],
+    hot: ["Блины с мясом", "Блины с грибами"],
+    dessert: ["Блины с творогом", "Блины с ягодами", "Блины с мёдом"]
+  },
+  "Пикник на природе": {
+    title: "🌳 Меню для пикника",
+    salad: ["Овощной салат", "Салат с кукурузой"],
+    snacks: ["Лаваш с начинкой", "Мини-бутерброды"],
+    hot: ["Куриные шашлычки", "Картофель на гриле"],
+    dessert: ["Фрукты", "Кексы"],
+    extra: ["Домашний лимонад", "Морс", "Вода"]
+  },
+  "Выпускной или школьный праздник": {
+    title: "🎓 Праздничный стол для школьников",
+    salad: ["Овощные стаканчики", "Фруктовый салат"],
+    snacks: ["Мини-бутерброды", "Канапе", "Мини-пиццы"],
+    hot: ["Куриные шашлычки", "Мини-котлетки"],
+    dessert: ["Капкейки", "Печенье", "Фруктовые шпажки"],
+    extra: ["Компот", "Морс", "Домашний лимонад"]
+  },
+  "Семейное застолье": {
+    title: "❤️ Семейный праздничный стол",
+    salad: ["Оливье", "Винегрет", "Салат с курицей"],
+    snacks: ["Фаршированные яйца", "Рулет из лаваша"],
+    hot: ["Курица с картофелем", "Мясо с овощами"],
+    dessert: ["Домашний пирог", "Творожный десерт", "Фрукты"]
+  }
+};
+
+function showHolidayMenu() {
+  const search = document.getElementById("holidaySearch").value.trim();
+  const guests = Number(document.getElementById("guests").value);
+  const result = document.getElementById("holidayResult");
+
+  const holiday = Object.keys(holidayMenus).find(
+    name => name.toLowerCase() === search.toLowerCase()
+  );
+
+  if (!holiday) {
+    result.style.display = "block";
+    result.innerHTML = "Пожалуйста, выбери праздник из списка или введи его название точно.";
+    return;
+  }
+
+  if (!Number.isInteger(guests) || guests < 1 || guests > 100) {
+    result.style.display = "block";
+    result.innerHTML = "Укажи количество гостей от 1 до 100.";
+    return;
+  }
+
+  const menu = holidayMenus[holiday];
+
+  let html = `<h3>${menu.title}</h3>`;
+  html += `<p>Гостей: <b>${guests}</b></p>`;
+
+  html += `<b>🥗 Салаты:</b><ul>`;
+  menu.salad.forEach(item => html += `<li>${item}</li>`);
+  html += `</ul>`;
+
+  html += `<b>🥪 Закуски:</b><ul>`;
+  menu.snacks.forEach(item => html += `<li>${item}</li>`);
+  html += `</ul>`;
+
+  html += `<b>🍗 Горячие блюда:</b><ul>`;
+  menu.hot.forEach(item => html += `<li>${item}</li>`);
+  html += `</ul>`;
+
+  html += `<b>🍰 Десерты:</b><ul>`;
+  menu.dessert.forEach(item => html += `<li>${item}</li>`);
+  html += `</ul>`;
+
+  if (menu.extra) {
+    html += `<b>🥤 Напитки и дополнения:</b><ul>`;
+    menu.extra.forEach(item => html += `<li>${item}</li>`);
+    html += `</ul>`;
+  }
+
+  html += `<p>💡 Это пример меню. Можно выбрать несколько блюд из каждого раздела и составить свой праздничный стол.</p>`;
+
+  result.innerHTML = html;
+  result.style.display = "block";
+}
+</script>
+
 </body>
 </html>
