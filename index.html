@@ -175,6 +175,7 @@ footer {
     </button>
 
     <div id="holidayResult"></div>
+    <div id="recipeDetails"></div>
   </div>
 
   <h2>Моё приложение</h2>
@@ -319,29 +320,21 @@ function showHolidayMenu() {
 
   const menu = holidayMenus[holiday];
 
-  let html = `<h3>${menu.title}</h3>`;
-  html += `<p>Гостей: <b>${guests}</b></p>`;
+  function makeDishList(title, emoji, dishes) {
+    let html = `<b>${emoji} ${title}:</b><ul>`;
+    dishes.forEach(item => {
+      html += `<li><a href="#" onclick="openRecipe('${item}'); return false;">${item}</a></li>`;
+    });
+    return html + `</ul>`;
+  }
 
-  html += `<b>🥗 Салаты:</b><ul>`;
-  menu.salad.forEach(item => html += `<li>${item}</li>`);
-  html += `</ul>`;
-
-  html += `<b>🥪 Закуски:</b><ul>`;
-  menu.snacks.forEach(item => html += `<li>${item}</li>`);
-  html += `</ul>`;
-
-  html += `<b>🍗 Горячие блюда:</b><ul>`;
-  menu.hot.forEach(item => html += `<li>${item}</li>`);
-  html += `</ul>`;
-
-  html += `<b>🍰 Десерты:</b><ul>`;
-  menu.dessert.forEach(item => html += `<li>${item}</li>`);
-  html += `</ul>`;
+  html += makeDishList("Салаты", "🥗", menu.salad);
+  html += makeDishList("Закуски", "🥪", menu.snacks);
+  html += makeDishList("Горячие блюда", "🍗", menu.hot);
+  html += makeDishList("Десерты", "🍰", menu.dessert);
 
   if (menu.extra) {
-    html += `<b>🥤 Напитки и дополнения:</b><ul>`;
-    menu.extra.forEach(item => html += `<li>${item}</li>`);
-    html += `</ul>`;
+    html += makeDishList("Напитки и дополнения", "🥤", menu.extra);
   }
 
   html += `<p>💡 Это пример меню. Можно выбрать несколько блюд из каждого раздела и составить свой праздничный стол.</p>`;
@@ -349,6 +342,126 @@ function showHolidayMenu() {
   result.innerHTML = html;
   result.style.display = "block";
 }
+const holidayRecipes = {
+  "Домашние мини-пиццы": {
+    time: "30 минут",
+    ingredients: [
+      "Готовое слоёное тесто — 500 г",
+      "Колбаса — 150 г",
+      "Сыр — 150 г",
+      "Помидоры — 2 шт.",
+      "Томатный соус — 3 ст. л."
+    ],
+    steps: [
+      "Разморозь тесто и нарежь небольшими кружочками.",
+      "Смажь каждый кружочек томатным соусом.",
+      "Добавь нарезанные помидоры и колбасу.",
+      "Посыпь тёртым сыром.",
+      "Выпекай при 180 °C около 15–20 минут."
+    ]
+  },
+
+  "Домашние наггетсы": {
+    time: "35 минут",
+    ingredients: [
+      "Куриное филе — 500 г",
+      "Яйца — 2 шт.",
+      "Панировочные сухари — 100 г",
+      "Мука — 3 ст. л.",
+      "Соль — по вкусу"
+    ],
+    steps: [
+      "Нарежь куриное филе небольшими кусочками.",
+      "Подготовь три тарелки: с мукой, взбитыми яйцами и сухарями.",
+      "Обваляй кусочки сначала в муке, затем в яйце и сухарях.",
+      "Выложи на противень с пергаментом.",
+      "Запекай при 200 °C около 20–25 минут до готовности."
+    ]
+  },
+
+  "Капкейки": {
+    time: "40 минут",
+    ingredients: [
+      "Мука — 200 г",
+      "Сахар — 120 г",
+      "Яйца — 2 шт.",
+      "Молоко — 100 мл",
+      "Сливочное масло — 100 г",
+      "Разрыхлитель — 1 ч. л."
+    ],
+    steps: [
+      "Взбей мягкое сливочное масло с сахаром.",
+      "Добавь яйца и молоко.",
+      "Вмешай муку с разрыхлителем.",
+      "Разложи тесто по формочкам.",
+      "Выпекай при 180 °C около 20–25 минут."
+    ]
+  },
+
+  "Фруктовые шпажки": {
+    time: "15 минут",
+    ingredients: [
+      "Бананы — 2 шт.",
+      "Клубника — 200 г",
+      "Виноград — 200 г",
+      "Киви — 2 шт.",
+      "Шпажки — 10 шт."
+    ],
+    steps: [
+      "Вымой фрукты.",
+      "Очисти бананы и киви.",
+      "Нарежь фрукты небольшими кусочками.",
+      "Аккуратно нанизывай кусочки на шпажки.",
+      "Выложи на красивую тарелку."
+    ]
+  }
+};
+
+function openRecipe(name) {
+  const recipe = holidayRecipes[name];
+  const details = document.getElementById("recipeDetails");
+
+  if (!recipe) {
+    details.style.display = "block";
+    details.innerHTML = `
+      <h3>${name}</h3>
+      <p>Подробный рецепт скоро появится в приложении!</p>
+    `;
+    return;
+  }
+
+  details.style.display = "block";
+
+  let html = `
+    <div class="welcome">
+      <h2>🍽️ ${name}</h2>
+      <p>⏱ Время приготовления: ${recipe.time}</p>
+      <h3>🛒 Ингредиенты</h3>
+      <ul>
+  `;
+
+  recipe.ingredients.forEach(item => {
+    html += `<li>${item}</li>`;
+  });
+
+  html += `</ul><h3>👩‍🍳 Приготовление</h3><ol>`;
+
+  recipe.steps.forEach(step => {
+    html += `<li>${step}</li>`;
+  });
+
+  html += `
+      </ol>
+      <button onclick="document.getElementById('recipeDetails').style.display='none'">
+        Закрыть рецепт
+      </button>
+    </div>
+  `;
+
+  details.innerHTML = html;
+  details.scrollIntoView({ behavior: "smooth" });
+}
+  
 </script>
 
 </body>
