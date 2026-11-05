@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Карточка рецепта — Вкусно и выгодно</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #fffaf0;
+  color: #343126;
+}
+header {
+  background: #f5c84c;
+  padding: 20px;
+  text-align: center;
+}
+header a {
+  color: #443719;
+  text-decoration: none;
+  font-weight: bold;
+}
+main {
+  max-width: 850px;
+  margin: 25px auto;
+  padding: 0 16px 40px;
+}
+.hero {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 18px;
+}
+h1 { font-size: 30px; margin-bottom: 10px; }
+.description { color: #716b5e; line-height: 1.6; }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 22px 0;
+}
+.stat {
+  background: white;
+  padding: 16px 8px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 2px 8px #0000000a;
+}
+.stat strong {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+section {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  margin: 18px 0;
+}
+h2 { margin-top: 0; font-size: 22px; }
+.portions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 15px;
+}
+button {
+  border: none;
+  background: #f5c84c;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 18px;
+  cursor: pointer;
+}
+.ingredient {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 0;
+  border-bottom: 1px solid #eee;
+}
+.ingredient input { accent-color: #d49c18; }
+.ingredient.checked span {
+  text-decoration: line-through;
+  color: #999;
+}
+.step {
+  padding: 12px 0;
+  line-height: 1.6;
+  border-bottom: 1px solid #eee;
+}
+.step b { color: #b17c0a; }
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #777;
+}
+@media(max-width: 500px) {
+  .hero { height: 210px; }
+  h1 { font-size: 25px; }
+  .stats { gap: 6px; }
+  .stat { padding: 12px 4px; font-size: 13px; }
+  .stat strong { font-size: 17px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html">🍲 Вкусно и выгодно</a>
+  <p>Готовим вкусно, просто и экономно!</p>
+</header>
+
+<main>
+  <img class="hero"
+    src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=85"
+    alt="Вкусное домашнее блюдо">
+
+  <h1>🍗 Куриная запеканка с картофелем</h1>
+  <p class="description">
+    Сытное домашнее блюдо для всей семьи.
+    Простые продукты, минимум хлопот и отличный результат!
+  </p>
+
+  <div class="stats">
+    <div class="stat">
+      <strong>⏱ 55 мин</strong>
+      Время
+    </div>
+    <div class="stat">
+      <strong>135 ккал</strong>
+      На 100 г
+    </div>
+    <div class="stat">
+      <strong>4</strong>
+      Порции
+    </div>
+  </div>
+
+  <section>
+    <h2>🛒 Ингредиенты</h2>
+    <div class="portions">
+      <span>Количество порций:</span>
+      <button onclick="changePortions(-1)">−</button>
+      <strong id="portionCount">4</strong>
+      <button onclick="changePortions(1)">+</button>
+    </div>
+    <div id="ingredients"></div>
+  </section>
+
+  <section>
+    <h2>👩‍🍳 Приготовление</h2>
+    <div class="step"><b>Шаг 1.</b> Очистите картофель и нарежьте тонкими кружочками.</div>
+    <div class="step"><b>Шаг 2.</b> Нарежьте куриное филе небольшими кусочками, лук — полукольцами.</div>
+    <div class="step"><b>Шаг 3.</b> Выложите картофель, курицу и лук слоями в форму для запекания.</div>
+    <div class="step"><b>Шаг 4.</b> Добавьте сметану, специи и немного воды. Сверху посыпьте сыром.</div>
+    <div class="step"><b>Шаг 5.</b> Запекайте при 180 °C около 40–45 минут до готовности.</div>
+  </section>
+
+  <section>
+    <h2>💡 Совет</h2>
+    Подавайте запеканку с овощным салатом и свежей зеленью.
+  </section>
+</main>
+
+<footer>❤️ Вкусно и выгодно — готовим с удовольствием!</footer>
+
+<script>
+const baseIngredients = [
+  {name: "Картофель", amount: 600, unit: "г"},
+  {name: "Куриное филе", amount: 300, unit: "г"},
+  {name: "Лук", amount: 1, unit: "шт."},
+  {name: "Сметана", amount: 150, unit: "г"},
+  {name: "Твёрдый сыр", amount: 100, unit: "г"},
+  {name: "Растительное масло", amount: 1, unit: "ст. л."},
+  {name: "Соль и специи", amount: 1, unit: "по вкусу"}
+];
+
+let portions = 4;
+
+function changePortions(change) {
+  portions = Math.max(1, Math.min(12, portions + change));
+  document.getElementById("portionCount").textContent = portions;
+  renderIngredients();
+}
+
+function renderIngredients() {
+  const container = document.getElementById("ingredients");
+  container.innerHTML = "";
+
+  baseIngredients.forEach(item => {
+    const amount = item.amount * portions / 4;
+    const displayAmount = Number.isInteger(amount)
+      ? amount
+      : Number(amount.toFixed(1));
+
+    const label = document.createElement("label");
+    label.className = "ingredient";
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+
+    const span = document.createElement("span");
+    span.textContent = item.name + " — " + displayAmount + " " + item.unit;
+
+    checkbox.addEventListener("change", () => {
+      label.classList.toggle("checked", checkbox.checked);
+    });
+
+    label.append(checkbox, span);
+    container.appendChild(label);
+  });
+}
+
+renderIngredients();
+</script>
+
+</body>
+</html>
