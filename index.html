@@ -518,7 +518,7 @@ function addRecipeToShoppingList(name) {
     alert("Ингредиенты добавлены в список покупок!");
   }
 
-   function renderShoppingList() {
+function renderShoppingList() {
   const container = document.getElementById("shoppingListContent");
 
   if (!container) return;
@@ -532,24 +532,34 @@ function addRecipeToShoppingList(name) {
     return;
   }
 
-  let html = "";
+  const products = {};
 
   shoppingList.forEach(recipe => {
-    html += `<h3>${recipe.recipeName}</h3>`;
+    recipe.ingredients.forEach(ingredient => {
+      const product = ingredient.trim();
+      const key = product.toLowerCase();
 
-    recipe.ingredients.forEach((ingredient, index) => {
-      html += `
-        <p>
-          <label>
-            <input type="checkbox">
-            ${ingredient}
-          </label>
-        </p>
-      `;
+      if (!products[key]) {
+        products[key] = product;
+      }
     });
   });
 
+  let html = "";
+
+  Object.values(products).forEach((product, index) => {
+    html += `
+      <p>
+        <label>
+          <input type="checkbox">
+          ${product}
+        </label>
+      </p>
+    `;
+  });
+
   container.innerHTML = html;
+}
 }
 </script>
 
