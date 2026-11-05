@@ -500,7 +500,110 @@ function addRecipeToShoppingList(name) {
     JSON.stringify(shoppingList)
   );
 
-  renderShoppingList();
+  
+function renderShoppingList() {
+  const container = document.getElementById("shoppingListContent");
+  if (!container) return;
+
+  const shoppingList = JSON.parse(
+    localStorage.getItem("vkusnoHolidayShoppingList") || "[]"
+  );
+
+  if (shoppingList.length === 0) {
+    container.innerHTML = "Список покупок пока пуст.";
+    return;
+  }
+
+  const departments = {
+    "🥩 Мясо и колбасные изделия": [],
+    "🥛 Молочные продукты": [],
+    "🥚 Яйца": [],
+    "🥕 Овощи и фрукты": [],
+    "🥫 Бакалея и выпечка": [],
+    "🧂 Соусы и специи": [],
+    "🧊 Замороженные продукты": [],
+    "🍢 Прочее": []
+  };
+
+  const categories = {
+    "куриное филе": "🥩 Мясо и колбасные изделия",
+    "колбаса": "🥩 Мясо и колбасные изделия",
+    "фарш": "🥩 Мясо и колбасные изделия",
+    "сыр": "🥛 Молочные продукты",
+    "молоко": "🥛 Молочные продукты",
+    "сливочное масло": "🥛 Молочные продукты",
+    "сметана": "🥛 Молочные продукты",
+    "яйца": "🥚 Яйца",
+    "помидоры": "🥕 Овощи и фрукты",
+    "бананы": "🥕 Овощи и фрукты",
+    "клубника": "🥕 Овощи и фрукты",
+    "виноград": "🥕 Овощи и фрукты",
+    "киви": "🥕 Овощи и фрукты",
+    "картофель": "🥕 Овощи и фрукты",
+    "огурцы": "🥕 Овощи и фрукты",
+    "яблоки": "🥕 Овощи и фрукты",
+    "мука": "🥫 Бакалея и выпечка",
+    "сахар": "🥫 Бакалея и выпечка",
+    "панировочные сухари": "🥫 Бакалея и выпечка",
+    "разрыхлитель": "🥫 Бакалея и выпечка",
+    "макароны": "🥫 Бакалея и выпечка",
+    "готовое слоёное тесто": "🧊 Замороженные продукты",
+    "томатный соус": "🧂 Соусы и специи",
+    "соль": "🧂 Соусы и специи"
+  };
+
+  const products = {};
+
+  shoppingList.forEach(recipe => {
+    recipe.ingredients.forEach(ingredient => {
+      const parts = ingredient.split("—");
+      const name = parts[0].trim();
+      const amount = parts[1] ? parts[1].trim() : "";
+      const key = name.toLowerCase();
+
+      if (!products[key]) {
+        products[key] = { name, amounts: [] };
+      }
+
+      if (amount) {
+        products[key].amounts.push(amount);
+      }
+    });
+  });
+
+  Object.values(products).forEach(product => {
+    const key = product.name.toLowerCase();
+    const department = categories[key] || "🍢 Прочее";
+
+    departments[department].push(product);
+  });
+
+  let html = "";
+
+  Object.entries(departments).forEach(([department, items]) => {
+    if (items.length === 0) return;
+
+    html += `<h3>${department}</h3>`;
+
+    items.forEach(product => {
+      const amount = product.amounts.length
+        ? " — " + product.amounts.join(" + ")
+        : "";
+
+      html += `
+        <p>
+          <label>
+            <input type="checkbox">
+            ${product.name}${amount}
+          </label>
+        </p>
+      `;
+    });
+  });
+
+  container.innerHTML = html;
+}
+
 
   const message = document.getElementById("shoppingMessage");
 
