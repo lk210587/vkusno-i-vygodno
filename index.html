@@ -468,10 +468,13 @@ function openRecipe(name) {
   details.innerHTML = html;
   details.scrollIntoView({ behavior: "smooth" });
 }
-  function addRecipeToShoppingList(name) {
+ function addRecipeToShoppingList(name) {
   const recipe = holidayRecipes[name];
 
-  if (!recipe) return;
+  if (!recipe) {
+    alert("Рецепт не найден");
+    return;
+  }
 
   let shoppingList = JSON.parse(
     localStorage.getItem("vkusnoHolidayShoppingList") || "[]"
@@ -491,8 +494,14 @@ function openRecipe(name) {
     JSON.stringify(shoppingList)
   );
 
-  document.getElementById("shoppingMessage").innerHTML =
-    "✅ Ингредиенты рецепта «" + name + "» добавлены в список покупок!";
+  const message = document.getElementById("shoppingMessage");
+
+  if (message) {
+    message.innerHTML =
+      "✅ Ингредиенты рецепта «" + name + "» добавлены в список покупок!";
+  } else {
+    alert("Ингредиенты добавлены в список покупок!");
+  }
 }
 </script>
 
