@@ -498,6 +498,7 @@ function openRecipe(name) {
   localStorage.setItem(
     "vkusnoHolidayShoppingList",
     JSON.stringify(shoppingList)
+    renderShoppingList();
   );
 
   const message = document.getElementById("shoppingMessage");
@@ -508,6 +509,40 @@ function openRecipe(name) {
   } else {
     alert("Ингредиенты добавлены в список покупок!");
   }
+
+   function renderShoppingList() {
+  const container = document.getElementById("shoppingListContent");
+
+  if (!container) return;
+
+  const shoppingList = JSON.parse(
+    localStorage.getItem("vkusnoHolidayShoppingList") || "[]"
+  );
+
+  if (shoppingList.length === 0) {
+    container.innerHTML = "Список покупок пока пуст.";
+    return;
+  }
+
+  let html = "";
+
+  shoppingList.forEach(recipe => {
+    html += `<h3>${recipe.recipeName}</h3>`;
+
+    recipe.ingredients.forEach((ingredient, index) => {
+      html += `
+        <p>
+          <label>
+            <input type="checkbox">
+            ${ingredient}
+          </label>
+        </p>
+      `;
+    });
+  });
+
+  container.innerHTML = html;
+}
 </script>
 
 </body>
