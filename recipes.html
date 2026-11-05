@@ -14,18 +14,19 @@ body {
   background: #fffaf0;
   color: #344333;
 }
-h1 { text-align: center; }
+h1, .subtitle { text-align: center; }
 a { color: #55734e; text-decoration: none; }
-.search {
+.search, input, textarea {
   width: 100%;
   box-sizing: border-box;
-  padding: 14px;
+  padding: 13px;
   border: 1px solid #ccd5c3;
-  border-radius: 12px;
+  border-radius: 10px;
   font-size: 16px;
-  margin: 15px 0;
+  margin: 8px 0;
 }
-.recipe {
+.search { margin: 15px 0; }
+.recipe, .form-box {
   display: block;
   background: white;
   padding: 18px;
@@ -33,21 +34,64 @@ a { color: #55734e; text-decoration: none; }
   border-radius: 16px;
   box-shadow: 0 2px 8px #0000000d;
   color: #344333;
-  transition: transform 0.2s;
-}
-.recipe:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px #00000018;
 }
 .recipe h2 { margin-top: 0; }
 .info { color: #78836f; font-size: 14px; }
-.open-recipe {
-  display: inline-block;
+.form-box h2 { margin-top: 0; }
+label {
+  display: block;
+  font-weight: bold;
+  margin-top: 12px;
+}
+button {
+  border: none;
   background: #f5c84c;
   color: #443719;
-  padding: 10px 16px;
+  padding: 13px 18px;
   border-radius: 10px;
+  font-size: 16px;
   font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+button:hover { opacity: 0.85; }
+.add-button {
+  display: block;
+  width: 100%;
+  margin: 20px 0;
+}
+.custom-photo {
+  width: 100%;
+  max-height: 230px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+details { margin-top: 12px; }
+details summary {
+  cursor: pointer;
+  color: #55734e;
+  font-weight: bold;
+}
+.delete-button {
+  background: #eee7df;
+  color: #775b4c;
+  font-size: 13px;
+}
+.hint {
+  font-size: 13px;
+  color: #777;
+  line-height: 1.5;
+}
+#message {
+  font-weight: bold;
+  color: #55734e;
+  margin-top: 12px;
+}
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #777;
 }
 </style>
 </head>
@@ -56,11 +100,13 @@ a { color: #55734e; text-decoration: none; }
 
 <a href="index.html">← На главную</a>
 
-<h1>🥑 Каталог рецептов</h1>
-<p style="text-align:center">Вкусные идеи на каждый день</p>
+<h1>🍲 Вкусно и выгодно</h1>
+<p class="subtitle">Каталог рецептов для всей семьи</p>
 
 <input class="search" id="search"
 placeholder="🔎 Найти рецепт..." oninput="filterRecipes()">
+
+<h2>📖 Общий каталог</h2>
 
 <div id="recipes">
 
@@ -86,20 +132,223 @@ placeholder="🔎 Найти рецепт..." oninput="filterRecipes()">
     <h2>🍗 Куриная запеканка с картофелем</h2>
     <p class="info">55 минут · 4 порции · 135 ккал на 100 г</p>
     <p>Картофель, куриное филе, лук, сметана, сыр.</p>
-    <span class="open-recipe">Посмотреть рецепт →</span>
+    <b>Посмотреть рецепт →</b>
   </a>
 
 </div>
 
-<script>
-function filterRecipes() {
-  const query = document.getElementById('search').value.toLowerCase();
+<h2>❤️ Мои рецепты</h2>
+<div id="myRecipes">
+  <p class="hint">Здесь будут отображаться рецепты, которые ты добавишь.</p>
+</div>
 
-  document.querySelectorAll('.recipe').forEach(recipe => {
-    recipe.style.display = recipe.innerText.toLowerCase().includes(query)
-      ? 'block' : 'none';
+<button class="add-button" onclick="document.getElementById('recipeForm').scrollIntoView({behavior:'smooth'})">
+＋ Добавить свой рецепт
+</button>
+
+<div class="form-box" id="recipeForm">
+  <h2>✍️ Создать рецепт</h2>
+
+  <form id="newRecipeForm">
+
+    <label>Название блюда *</label>
+    <input id="name" required placeholder="Например, творожный десерт">
+
+    <label>Описание блюда</label>
+    <textarea id="description" rows="2"
+    placeholder="Кратко расскажи о блюде"></textarea>
+
+    <label>Фотография блюда</label>
+    <input id="photo" type="file" accept="image/*">
+    <p class="hint">Выбери фотографию из своего устройства. Желательно до 1 МБ.</p>
+
+    <label>Время приготовления (минуты) *</label>
+    <input id="time" type="number" min="1" required placeholder="Например, 30">
+
+    <label>Калорийность на 100 г (ккал) *</label>
+    <input id="calories" type="number" min="0" required placeholder="Например, 180">
+
+    <label>Количество порций</label>
+    <input id="portions" type="number" min="1" value="4">
+
+    <label>Ингредиенты *</label>
+    <textarea id="ingredients" rows="5" required
+    placeholder="200 г творога&#10;2 яйца&#10;3 ст. л. муки"></textarea>
+
+    <label>Способ приготовления *</label>
+    <textarea id="steps" rows="6" required
+    placeholder="1. Подготовить продукты.&#10;2. Смешать ингредиенты.&#10;3. Приготовить блюдо."></textarea>
+
+    <button type="submit">💾 Сохранить рецепт</button>
+
+    <p id="message"></p>
+
+  </form>
+</div>
+
+<footer>❤️ Вкусно и выгодно — готовим с удовольствием!</footer>
+
+<script>
+const STORAGE_KEY = "vkusnoMyRecipes";
+
+function getRecipes() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  } catch {
+    return [];
+  }
+}
+
+let myRecipes = getRecipes();
+
+function filterRecipes() {
+  const query = document.getElementById("search").value.toLowerCase();
+
+  document.querySelectorAll(".recipe").forEach(recipe => {
+    recipe.style.display =
+      recipe.innerText.toLowerCase().includes(query) ? "block" : "none";
   });
 }
+
+function makeTextBlock(tag, text) {
+  const element = document.createElement(tag);
+  element.textContent = text;
+  return element;
+}
+
+function renderMyRecipes() {
+  const container = document.getElementById("myRecipes");
+  container.replaceChildren();
+
+  if (myRecipes.length === 0) {
+    container.appendChild(
+      makeTextBlock("p", "Здесь будут отображаться твои рецепты.")
+    );
+    return;
+  }
+
+  myRecipes.forEach((recipe, index) => {
+    const card = document.createElement("div");
+    card.className = "recipe";
+
+    if (recipe.photo) {
+      const img = document.createElement("img");
+      img.src = recipe.photo;
+      img.alt = recipe.name;
+      img.className = "custom-photo";
+      card.appendChild(img);
+    }
+
+    card.appendChild(makeTextBlock("h2", "🍽️ " + recipe.name));
+
+    card.appendChild(makeTextBlock(
+      "p",
+      recipe.time + " минут · " + recipe.portions +
+      " порции · " + recipe.calories + " ккал на 100 г"
+    ));
+
+    if (recipe.description) {
+      card.appendChild(makeTextBlock("p", recipe.description));
+    }
+
+    const details = document.createElement("details");
+    const summary = makeTextBlock("summary", "Посмотреть рецепт");
+    details.appendChild(summary);
+
+    details.appendChild(makeTextBlock("h3", "Ингредиенты"));
+    details.appendChild(makeTextBlock("p", recipe.ingredients));
+
+    details.appendChild(makeTextBlock("h3", "Приготовление"));
+    details.appendChild(makeTextBlock("p", recipe.steps));
+
+    card.appendChild(details);
+
+    const deleteButton = makeTextBlock("button", "Удалить рецепт");
+    deleteButton.className = "delete-button";
+    deleteButton.type = "button";
+
+    deleteButton.addEventListener("click", () => {
+      if (confirm("Удалить этот рецепт?")) {
+        myRecipes.splice(index, 1);
+        saveRecipes();
+        renderMyRecipes();
+        filterRecipes();
+      }
+    });
+
+    card.appendChild(deleteButton);
+    container.appendChild(card);
+  });
+
+  filterRecipes();
+}
+
+function saveRecipes() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(myRecipes));
+    return true;
+  } catch (error) {
+    alert("Не удалось сохранить рецепт. Возможно, фотография слишком большая.");
+    return false;
+  }
+}
+
+document.getElementById("newRecipeForm").addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  const photoInput = document.getElementById("photo");
+  const file = photoInput.files[0];
+
+  if (file && file.size > 1024 * 1024) {
+    alert("Выбери фотографию размером не более 1 МБ.");
+    return;
+  }
+
+  let photoData = "";
+
+  if (file) {
+    photoData = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    }).catch(() => {
+      alert("Не удалось загрузить фотографию.");
+      return "";
+    });
+
+    if (!photoData) return;
+  }
+
+  const recipe = {
+    name: document.getElementById("name").value.trim(),
+    description: document.getElementById("description").value.trim(),
+    time: document.getElementById("time").value,
+    calories: document.getElementById("calories").value,
+    portions: document.getElementById("portions").value || 4,
+    ingredients: document.getElementById("ingredients").value.trim(),
+    steps: document.getElementById("steps").value.trim(),
+    photo: photoData
+  };
+
+  myRecipes.push(recipe);
+
+  if (!saveRecipes()) {
+    myRecipes.pop();
+    return;
+  }
+
+  renderMyRecipes();
+  this.reset();
+  document.getElementById("message").textContent =
+    "🎉 Рецепт успешно сохранён!";
+
+  document.getElementById("myRecipes").scrollIntoView({
+    behavior: "smooth"
+  });
+});
+
+renderMyRecipes();
 </script>
 
 </body>
