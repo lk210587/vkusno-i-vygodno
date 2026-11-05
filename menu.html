@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Меню на неделю — Вкусно и выгодно</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 18px;
+  font-family: Arial, sans-serif;
+  background: #fffaf0;
+  color: #344333;
+}
+header {
+  background: #f5c84c;
+  padding: 18px;
+  text-align: center;
+  border-radius: 16px;
+}
+header a { color: #443719; text-decoration: none; font-weight: bold; }
+main { max-width: 950px; margin: 20px auto; }
+h1, .subtitle { text-align: center; }
+.day {
+  background: white;
+  padding: 18px;
+  border-radius: 15px;
+  margin: 15px 0;
+  box-shadow: 0 2px 8px #0000000b;
+}
+.day h2 { margin-top: 0; color: #8b6920; }
+.meal {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid #eee;
+}
+.meal label { font-weight: bold; }
+select, input {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #d5d9cc;
+  border-radius: 9px;
+  font-size: 15px;
+  background: white;
+}
+button {
+  background: #f5c84c;
+  color: #443719;
+  border: 0;
+  border-radius: 10px;
+  padding: 13px 18px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 6px 4px 6px 0;
+}
+.actions { text-align: center; margin: 20px 0; }
+.shopping {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px 0;
+}
+.shopping li { margin: 12px 0; }
+.shopping input { width: auto; }
+.hint { color: #777; font-size: 13px; }
+@media(max-width: 500px) {
+  .meal { grid-template-columns: 1fr; gap: 5px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html">🍲 Вкусно и выгодно</a>
+  <p>Планируем питание с удовольствием!</p>
+</header>
+
+<main>
+<h1>📅 Меню на неделю</h1>
+<p class="subtitle">Составь меню для всей семьи и получи список покупок</p>
+
+<div id="week"></div>
+
+<div class="actions">
+  <button onclick="saveMenu()">💾 Сохранить меню</button>
+  <button onclick="buildShoppingList()">🛒 Список покупок</button>
+</div>
+
+<section class="shopping" id="shoppingSection">
+  <h2>🛒 Список покупок</h2>
+  <p class="hint">Выбери блюда и нажми «Список покупок».</p>
+  <ul id="shoppingList"></ul>
+  <button onclick="window.print()">🖨 Распечатать</button>
+</section>
+</main>
+
+<script>
+const days = [
+  "Понедельник", "Вторник", "Среда", "Четверг",
+  "Пятница", "Суббота", "Воскресенье"
+];
+
+const meals = ["Завтрак", "Обед", "Ужин"];
+
+const dishes = {
+  "Нежные сырники": [
+    ["Творог", "400 г"], ["Яйца", "2 шт."],
+    ["Мука", "4 ст. л."], ["Сахар", "2 ст. л."]
+  ],
+  "Крем-суп из тыквы": [
+    ["Тыква", "500 г"], ["Картофель", "2 шт."],
+    ["Морковь", "1 шт."], ["Лук", "1 шт."],
+    ["Сливки", "200 мл"]
+  ],
+  "Салат с курицей": [
+    ["Куриное филе", "200 г"], ["Огурец", "1 шт."],
+    ["Помидоры", "2 шт."], ["Листья салата", "1 упаковка"]
+  ],
+  "Куриная запеканка": [
+    ["Картофель", "600 г"], ["Куриное филе", "300 г"],
+    ["Лук", "1 шт."], ["Сметана", "150 г"],
+    ["Твёрдый сыр", "100 г"]
+  ],
+  "Творожный десерт": [
+    ["Творог", "200 г"], ["Банан", "1 шт."],
+    ["Йогурт", "100 г"], ["Мёд", "1 ст. л."]
+  ],
+  "Овощной салат": [
+    ["Огурец", "1 шт."], ["Помидоры", "2 шт."],
+    ["Зелень", "1 пучок"]
+  ],
+  "Овсяная каша": [
+    ["Овсяные хлопья", "100 г"], ["Молоко", "300 мл"]
+  ]
+};
+
+const STORAGE_KEY = "vkusnoWeeklyMenu";
+
+let menu = {};
+
+function loadMenu() {
+  try {
+    menu = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+  } catch {
+    menu = {};
+  }
+}
+
+function renderMenu() {
+  const container = document.getElementById("week");
+  container.replaceChildren();
+
+  days.forEach((day, dayIndex) => {
+    const section = document.createElement("section");
+    section.className = "day";
+    section.appendChild(makeElement("h2", day));
+
+    meals.forEach(meal => {
+      const row = document.createElement("div");
+      row.className = "meal";
+
+      row.appendChild(makeElement("label", meal));
+
+      const select = document.createElement("select");
+      select.dataset.day = dayIndex;
+      select.dataset.meal = meal;
+
+      const empty = new Option("— Выбрать блюдо —", "");
+      select.add(empty);
+
+      Object.keys(dishes).forEach(dish => {
+        select.add(new Option(dish, dish));
+      });
+
+      select.value = menu[dayIndex]?.[meal] || "";
+      select.addEventListener("change", () => {
+        if (!menu[dayIndex]) menu[dayIndex] = {};
+        menu[dayIndex][meal] = select.value;
+      });
+
+      row.appendChild(select);
+      section.appendChild(row);
+    });
+
+    container.appendChild(section);
+  });
+}
+
+function makeElement(tag, text) {
+  const el = document.createElement(tag);
+  el.textContent = text;
+  return el;
+}
+
+function saveMenu() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(menu));
+    alert("❤️ Меню на неделю сохранено!");
+  } catch {
+    alert("Не удалось сохранить меню.");
+  }
+}
+
+function buildShoppingList() {
+  const totals = {};
+
+  Object.values(menu).forEach(day => {
+    Object.values(day).forEach(dish => {
+      (dishes[dish] || []).forEach(([name, amount]) => {
+        if (!totals[name]) totals[name] = [];
+        totals[name].push(amount);
+      });
+    });
+  });
+
+  const list = document.getElementById("shoppingList");
+  list.replaceChildren();
+
+  if (Object.keys(totals).length === 0) {
+    list.appendChild(makeElement("li", "Сначала выбери блюда в меню."));
+    return;
+  }
+
+  Object.entries(totals).forEach(([name, amounts]) => {
+    const li = document.createElement("li");
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+
+    const text = document.createTextNode(
+      " " + name + " — " + amounts.join(" + ")
+    );
+
+    li.append(checkbox, text);
+    list.appendChild(li);
+  });
+
+  document.getElementById("shoppingSection").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+loadMenu();
+renderMenu();
+</script>
+
+</body>
+</html>
