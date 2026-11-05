@@ -319,7 +319,7 @@ function showHolidayMenu() {
   }
 
   const menu = holidayMenus[holiday];
-
+let html = `<h3>${menu.title}</h3><p>Гостей: <b>${guests}</b></p>`;
   function makeDishList(title, emoji, dishes) {
     let html = `<b>${emoji} ${title}:</b><ul>`;
     dishes.forEach(item => {
