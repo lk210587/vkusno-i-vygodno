@@ -1,625 +1,90 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Вкусно и выгодно</title>
-
 <style>
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #faf8f1;
-  color: #343d2e;
-}
-
-header {
-  padding: 25px 20px;
-  background: #e8eddd;
-}
-
-h1 { margin: 0; font-size: 27px; }
-header p { margin-bottom: 0; color: #66715b; }
-
-main {
-  padding: 20px;
-  max-width: 600px;
-  margin: auto;
-}
-
-h2 { font-size: 21px; }
-
-.main-button {
-  display: block;
-  text-align: center;
-  background: #55734e;
-  color: white;
-  padding: 15px;
-  border-radius: 12px;
-  text-decoration: none;
-  font-weight: bold;
-  margin: 15px 0;
-}
-
-.menu {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.item {
-  background: white;
-  padding: 20px 12px;
-  border-radius: 16px;
-  text-align: center;
-  font-size: 15px;
-  box-shadow: 0 2px 10px #00000008;
-}
-
-.icon { font-size: 30px; margin-bottom: 8px; }
-
-.welcome, .holiday-box {
-  background: white;
-  border-radius: 18px;
-  padding: 20px;
-  margin-top: 20px;
-  box-shadow: 0 2px 10px #00000008;
-}
-
-.holiday-box {
-  border: 2px solid #e8eddd;
-}
-
-label {
-  display: block;
-  font-weight: bold;
-  margin-top: 15px;
-  margin-bottom: 7px;
-}
-
-select, input {
-  width: 100%;
-  padding: 13px;
-  border: 1px solid #d5ddca;
-  border-radius: 10px;
-  font-size: 16px;
-  background: white;
-  color: #343d2e;
-}
-
-button {
-  border: 0;
-  background: #657b4e;
-  color: white;
-  padding: 15px;
-  width: 100%;
-  border-radius: 12px;
-  font-size: 16px;
-  margin-top: 15px;
-  cursor: pointer;
-}
-
-#holidayResult {
-  display: none;
-  margin-top: 20px;
-  padding: 15px;
-  background: #f4f7ed;
-  border-radius: 12px;
-  line-height: 1.6;
-}
-
-#holidayResult h3 {
-  color: #55734e;
-}
-
-footer {
-  text-align: center;
-  padding: 25px;
-  color: #78816f;
-  font-size: 13px;
-}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#faf8f1;color:#343d2e}header{padding:22px 20px;background:#e8eddd;position:sticky;top:0;z-index:5}header h1{margin:0;font-size:27px}header p{margin:7px 0 0;color:#66715b}main{padding:18px;max-width:760px;margin:auto}h2{font-size:21px;margin-top:0}h3{color:#55734e}.welcome,.holiday-box,.panel{background:#fff;border-radius:18px;padding:18px;margin:15px 0;box-shadow:0 2px 10px #00000008}.holiday-box{border:2px solid #e8eddd}.menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.item{background:white;padding:18px 10px;border-radius:16px;text-align:center;font-size:15px;box-shadow:0 2px 10px #00000008;cursor:pointer;border:2px solid transparent}.item.active{border-color:#8da47b;background:#f4f7ed}.icon{font-size:29px;margin-bottom:8px}label{display:block;font-weight:bold;margin:12px 0 6px}input,select{width:100%;padding:12px;border:1px solid #d5ddca;border-radius:10px;font-size:16px;background:white;color:#343d2e}button{border:0;background:#657b4e;color:white;padding:13px;width:100%;border-radius:12px;font-size:15px;margin-top:10px;cursor:pointer}button.secondary{background:#e8eddd;color:#34432d}button.danger{background:#a65348}button.small{width:auto;padding:8px 11px;margin:3px;font-size:13px}.section{display:none}.section.active{display:block}.recipe-card,.list-row,.day-card{background:#f8f9f4;border:1px solid #e6eadf;border-radius:12px;padding:13px;margin:10px 0}.recipe-card h3{margin:0 0 5px}.muted{color:#78816f;font-size:13px}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions button{flex:1;min-width:120px}.list-row{display:flex;align-items:center;gap:10px}.list-row input[type=checkbox]{width:20px;height:20px;flex:none}.list-row .product-text{flex:1}.list-row.done .product-text{text-decoration:line-through;color:#8a9382}.list-row button{width:auto;margin:0;padding:8px 10px}.empty{padding:16px;text-align:center;color:#78816f;background:#f8f9f4;border-radius:12px}#holidayResult{display:none;margin-top:15px;padding:14px;background:#f4f7ed;border-radius:12px;line-height:1.55}#recipeDetails{display:none}.nav-back{background:transparent;color:#55734e;text-align:left;padding:4px 0;width:auto;margin:0 0 12px}footer{text-align:center;padding:25px;color:#78816f;font-size:13px}@media(max-width:420px){main{padding:13px}.menu{gap:9px}.item{padding:15px 7px}}
 </style>
 </head>
-
 <body>
-
-<header>
-  <h1>🥑 Вкусно и выгодно</h1>
-  <p>Планируй меню. Экономь. Наслаждайся!</p>
-</header>
-
+<header><h1>🥑 Вкусно и выгодно</h1><p>Планируй меню. Экономь. Наслаждайся!</p></header>
 <main>
-
-  <div class="welcome">
-    <h2>Добро пожаловать!</h2>
-    <p>Что будем готовить сегодня?</p>
-    <a href="recipes.html" class="main-button">
-      Выбрать рецепты
-    </a>
-  </div>
-
+<section id="home" class="section active">
+  <div class="welcome"><h2>Добро пожаловать!</h2><p>Что будем готовить сегодня?</p><button onclick="showSection('recipes')">Выбрать рецепты</button></div>
   <div class="holiday-box">
-    <h2>🎉 Что приготовить к празднику?</h2>
-    <p>Выбери повод — подберём идеи блюд для праздничного стола!</p>
-
-    <label for="holidaySearch">Найти праздник</label>
-    <input
-      type="text"
-      id="holidaySearch"
-      list="holidayOptions"
-      placeholder="Например, Новый год или день рождения"
-    >
-
-    <datalist id="holidayOptions">
-      <option value="Новый год">
-      <option value="Рождество">
-      <option value="День рождения взрослого">
-      <option value="Детский день рождения">
-      <option value="Пасха">
-      <option value="8 Марта">
-      <option value="23 Февраля">
-      <option value="Масленица">
-      <option value="Пикник на природе">
-      <option value="Выпускной или школьный праздник">
-      <option value="Семейное застолье">
-    </datalist>
-
-    <label for="guests">Количество гостей</label>
-    <input type="number" id="guests" min="1" max="100" value="6">
-
-    <button onclick="showHolidayMenu()">
-      Подобрать праздничное меню
-    </button>
-
-    <div id="holidayResult"></div>
-    <div id="recipeDetails"></div>
-    <div id="shoppingListSection">
-  <h2>🛒 Мой список покупок</h2>
-  <div id="shoppingListContent">
-    Здесь появятся добавленные продукты.
+    <h2>🎉 Что приготовить к празднику?</h2><p>Выбери повод — подберём идеи блюд для праздничного стола!</p>
+    <label for="holidaySearch">Найти праздник</label><input id="holidaySearch" list="holidayOptions" placeholder="Например, Новый год или день рождения">
+    <datalist id="holidayOptions"><option value="Новый год"><option value="Рождество"><option value="День рождения взрослого"><option value="Детский день рождения"><option value="Пасха"><option value="8 Марта"><option value="23 Февраля"><option value="Масленица"><option value="Пикник на природе"><option value="Выпускной или школьный праздник"><option value="Семейное застолье"></datalist>
+    <label for="guests">Количество гостей</label><input type="number" id="guests" min="1" max="100" value="6"><button onclick="showHolidayMenu()">Подобрать праздничное меню</button><div id="holidayResult"></div>
   </div>
-</div>
-  </div>
-
   <h2>Моё приложение</h2>
-
   <div class="menu">
-    <div class="item">
-      <div class="icon">🍲</div>
-      Рецепты
-    </div>
-    <div class="item">
-      <div class="icon">📅</div>
-      Меню на неделю
-    </div>
-    <div class="item">
-      <div class="icon">🛒</div>
-      Список покупок
-    </div>
-    <div class="item">
-      <div class="icon">🥕</div>
-      Моя кладовая
-    </div>
-    <div class="item">
-      <div class="icon">💰</div>
-      Мой бюджет
-    </div>
-    <div class="item">
-      <div class="icon">❤️</div>
-      Избранное
-    </div>
+    <div class="item" onclick="showSection('recipes')"><div class="icon">🍲</div>Рецепты</div>
+    <div class="item" onclick="showSection('weekly')"><div class="icon">📅</div>Меню на неделю</div>
+    <div class="item" onclick="showSection('shopping')"><div class="icon">🛒</div>Список покупок</div>
+    <div class="item" onclick="showSection('pantry')"><div class="icon">🥕</div>Моя кладовая</div>
+    <div class="item" onclick="showSection('budget')"><div class="icon">💰</div>Мой бюджет</div>
+    <div class="item" onclick="showSection('favorites')"><div class="icon">❤️</div>Избранное</div>
   </div>
-
-</main>
-
-<footer>
-  Вкусно и выгодно © 2026
-</footer>
-
+</section>
+<section id="recipes" class="section"><button class="nav-back" onclick="showSection('home')">← На главную</button><h2>🍲 Каталог рецептов</h2><p class="muted">Продукты попадут в покупки только после нажатия специальной кнопки.</p><div id="recipeCatalog"></div><div id="recipeDetails" class="panel"></div></section>
+<section id="weekly" class="section"><button class="nav-back" onclick="showSection('home')">← На главную</button><h2>📅 Меню на неделю</h2><p class="muted">Составление меню не добавляет продукты в список покупок.</p><div id="weeklyContent"></div></section>
+<section id="shopping" class="section"><button class="nav-back" onclick="showSection('home')">← На главную</button><h2>🛒 Мой список покупок</h2><div class="panel"><label for="manualProduct">Добавить продукт вручную</label><input id="manualProduct" placeholder="Например, молоко"><button onclick="addManualProduct()">Добавить продукт</button></div><div id="shoppingListContent"></div><button class="secondary" onclick="clearChecked()">Удалить отмеченные</button></section>
+<section id="pantry" class="section"><button class="nav-back" onclick="showSection('home')">← На главную</button><h2>🥕 Моя кладовая</h2><p class="muted">Продукты, которые уже есть дома. Они не добавляются в покупки автоматически.</p><div class="panel"><label for="pantryProduct">Название продукта</label><input id="pantryProduct" placeholder="Например, гречка"><label for="pantryAmount">Количество (необязательно)</label><input id="pantryAmount" placeholder="Например, 1 пачка"><button onclick="addPantryProduct()">Добавить в кладовую</button></div><div id="pantryContent"></div></section>
+<section id="budget" class="section"><button class="nav-back" onclick="showSection('home')">← На главную</button><h2>💰 Мой бюджет</h2><div class="panel"><label for="budgetLimit">Плановый бюджет на продукты, ₽</label><input type="number" id="budgetLimit" min="0" placeholder="Например, 10000" onchange="saveBudget()"><label for="spentAmount">Потрачено, ₽</label><input type="number" id="spentAmount" min="0" placeholder="0" onchange="saveBudget()"><div id="budgetSummary" class="welcome"></div></div></section>
+<section id="favorites" class="section"><button class="nav-back" onclick="showSection('home')">← На главную</button><h2>❤️ Избранные рецепты</h2><div id="favoritesContent"></div></section>
+</main><footer>Вкусно и выгодно © 2026</footer>
 <script>
-const holidayMenus = {
-  "Новый год": {
-    title: "🎄 Новогодний стол",
-    salad: ["Оливье", "Сельдь под шубой", "Салат с курицей и ананасом"],
-    snacks: ["Фаршированные яйца", "Рулет из лаваша", "Бутерброды с красной рыбой"],
-    hot: ["Запечённая курица с картофелем", "Мясо по-французски"],
-    dessert: ["Мандариновый десерт", "Торт", "Фруктовая тарелка"]
-  },
-  "Рождество": {
-    title: "✨ Рождественский стол",
-    salad: ["Винегрет", "Овощной салат", "Салат с курицей"],
-    snacks: ["Домашние пирожки", "Фаршированные яйца"],
-    hot: ["Запечённая курица", "Рыба с овощами"],
-    dessert: ["Кутья", "Пирог с яблоками", "Компот"]
-  },
-  "День рождения взрослого": {
-    title: "🎂 Праздничный стол для взрослых",
-    salad: ["Оливье", "Цезарь с курицей", "Салат с грибами"],
-    snacks: ["Рулетики из баклажанов", "Тарталетки", "Мясная нарезка"],
-    hot: ["Мясо с картофелем в духовке", "Запечённая рыба"],
-    dessert: ["Торт", "Чизкейк", "Фруктовая тарелка"]
-  },
-  "Детский день рождения": {
-    title: "🎈 Весёлый детский праздник",
-    salad: ["Фруктовый салат", "Салат с курицей", "Овощные стаканчики"],
-    snacks: ["Мини-бутерброды", "Канапе с сыром и овощами", "Домашние мини-пиццы"],
-    hot: ["Куриные шашлычки", "Картофельные дольки", "Домашние наггетсы"],
-    dessert: ["Капкейки", "Фруктовые шпажки", "Желейный десерт"],
-    extra: ["Морс", "Компот", "Домашний лимонад"]
-  },
-  "Пасха": {
-    title: "🐣 Пасхальный стол",
-    salad: ["Весенний салат", "Овощной салат"],
-    snacks: ["Крашеные яйца", "Фаршированные яйца", "Сырная тарелка"],
-    hot: ["Запечённая курица", "Мясо с овощами"],
-    dessert: ["Пасхальный кулич", "Творожная пасха"]
-  },
-  "8 Марта": {
-    title: "🌷 Праздничный стол к 8 Марта",
-    salad: ["Салат с креветками", "Цезарь", "Салат с курицей"],
-    snacks: ["Тарталетки", "Рулетики из лаваша"],
-    hot: ["Рыба в духовке", "Курица с овощами"],
-    dessert: ["Клубничный десерт", "Тирамису", "Фруктовая тарелка"]
-  },
-  "23 Февраля": {
-    title: "🎖️ Праздничный стол к 23 Февраля",
-    salad: ["Оливье", "Салат с мясом", "Салат с грибами"],
-    snacks: ["Домашние бутерброды", "Мясная нарезка"],
-    hot: ["Мясо по-французски", "Запечённые рёбрышки"],
-    dessert: ["Шоколадный торт", "Пирог"]
-  },
-  "Масленица": {
-    title: "🥞 Масленичная неделя",
-    salad: ["Овощной салат", "Салат с курицей"],
-    snacks: ["Блины с сыром", "Блины с ветчиной"],
-    hot: ["Блины с мясом", "Блины с грибами"],
-    dessert: ["Блины с творогом", "Блины с ягодами", "Блины с мёдом"]
-  },
-  "Пикник на природе": {
-    title: "🌳 Меню для пикника",
-    salad: ["Овощной салат", "Салат с кукурузой"],
-    snacks: ["Лаваш с начинкой", "Мини-бутерброды"],
-    hot: ["Куриные шашлычки", "Картофель на гриле"],
-    dessert: ["Фрукты", "Кексы"],
-    extra: ["Домашний лимонад", "Морс", "Вода"]
-  },
-  "Выпускной или школьный праздник": {
-    title: "🎓 Праздничный стол для школьников",
-    salad: ["Овощные стаканчики", "Фруктовый салат"],
-    snacks: ["Мини-бутерброды", "Канапе", "Мини-пиццы"],
-    hot: ["Куриные шашлычки", "Мини-котлетки"],
-    dessert: ["Капкейки", "Печенье", "Фруктовые шпажки"],
-    extra: ["Компот", "Морс", "Домашний лимонад"]
-  },
-  "Семейное застолье": {
-    title: "❤️ Семейный праздничный стол",
-    salad: ["Оливье", "Винегрет", "Салат с курицей"],
-    snacks: ["Фаршированные яйца", "Рулет из лаваша"],
-    hot: ["Курица с картофелем", "Мясо с овощами"],
-    dessert: ["Домашний пирог", "Творожный десерт", "Фрукты"]
-  }
+const STORAGE={shopping:'vkusnoShoppingV2',pantry:'vkusnoPantryV2',weekly:'vkusnoWeeklyV2',favorites:'vkusnoFavoritesV2',budget:'vkusnoBudgetV2'};
+const recipes={
+'Домашние мини-пиццы':{time:'30 минут',ingredients:['Готовое слоёное тесто — 500 г','Колбаса — 150 г','Сыр — 150 г','Помидоры — 2 шт.','Томатный соус — 3 ст. л.'],steps:['Разморозь тесто и нарежь небольшими кружочками.','Смажь каждый кружочек томатным соусом.','Добавь нарезанные помидоры и колбасу.','Посыпь тёртым сыром.','Выпекай при 180 °C около 15–20 минут.']},
+'Домашние наггетсы':{time:'35 минут',ingredients:['Куриное филе — 500 г','Яйца — 2 шт.','Панировочные сухари — 100 г','Мука — 3 ст. л.','Соль — по вкусу'],steps:['Нарежь куриное филе небольшими кусочками.','Подготовь три тарелки: с мукой, взбитыми яйцами и сухарями.','Обваляй кусочки сначала в муке, затем в яйце и сухарях.','Выложи на противень с пергаментом.','Запекай при 200 °C около 20–25 минут до готовности.']},
+'Капкейки':{time:'40 минут',ingredients:['Мука — 200 г','Сахар — 120 г','Яйца — 2 шт.','Молоко — 100 мл','Сливочное масло — 100 г','Разрыхлитель — 1 ч. л.'],steps:['Взбей мягкое сливочное масло с сахаром.','Добавь яйца и молоко.','Вмешай муку с разрыхлителем.','Разложи тесто по формочкам.','Выпекай при 180 °C около 20–25 минут.']},
+'Фруктовые шпажки':{time:'15 минут',ingredients:['Бананы — 2 шт.','Клубника — 200 г','Виноград — 200 г','Киви — 2 шт.','Шпажки — 10 шт.'],steps:['Вымой фрукты.','Очисти бананы и киви.','Нарежь фрукты небольшими кусочками.','Аккуратно нанизывай кусочки на шпажки.','Выложи на красивую тарелку.']},
+'Фаршированные яйца':{time:'25 минут',ingredients:['Яйца — 6 шт.','Сыр — 50 г','Майонез — 2 ст. л.','Чеснок — 1 зубчик','Зелень — по вкусу'],steps:['Отвари яйца вкрутую и остуди.','Разрежь пополам и вынь желтки.','Разомни желтки с сыром, майонезом и чесноком.','Наполни белки начинкой.','Укрась зеленью.']}
 };
-
-function showHolidayMenu() {
-  const search = document.getElementById("holidaySearch").value.trim();
-  const guests = Number(document.getElementById("guests").value);
-  const result = document.getElementById("holidayResult");
-
-  const holiday = Object.keys(holidayMenus).find(
-    name => name.toLowerCase() === search.toLowerCase()
-  );
-
-  if (!holiday) {
-    result.style.display = "block";
-    result.innerHTML = "Пожалуйста, выбери праздник из списка или введи его название точно.";
-    return;
-  }
-
-  if (!Number.isInteger(guests) || guests < 1 || guests > 100) {
-    result.style.display = "block";
-    result.innerHTML = "Укажи количество гостей от 1 до 100.";
-    return;
-  }
-
-  const menu = holidayMenus[holiday];
-let html = `<h3>${menu.title}</h3><p>Гостей: <b>${guests}</b></p>`;
-  function makeDishList(title, emoji, dishes) {
-    let html = `<b>${emoji} ${title}:</b><ul>`;
-    dishes.forEach(item => {
-      html += `<li><a href="#" onclick="openRecipe('${item}'); return false;">${item}</a></li>`;
-    });
-    return html + `</ul>`;
-  }
-
-  html += makeDishList("Салаты", "🥗", menu.salad);
-  html += makeDishList("Закуски", "🥪", menu.snacks);
-  html += makeDishList("Горячие блюда", "🍗", menu.hot);
-  html += makeDishList("Десерты", "🍰", menu.dessert);
-
-  if (menu.extra) {
-    html += makeDishList("Напитки и дополнения", "🥤", menu.extra);
-  }
-
-  html += `<p>💡 Это пример меню. Можно выбрать несколько блюд из каждого раздела и составить свой праздничный стол.</p>`;
-
-  result.innerHTML = html;
-  result.style.display = "block";
-}
-const holidayRecipes = {
-  "Домашние мини-пиццы": {
-    time: "30 минут",
-    ingredients: [
-      "Готовое слоёное тесто — 500 г",
-      "Колбаса — 150 г",
-      "Сыр — 150 г",
-      "Помидоры — 2 шт.",
-      "Томатный соус — 3 ст. л."
-    ],
-    steps: [
-      "Разморозь тесто и нарежь небольшими кружочками.",
-      "Смажь каждый кружочек томатным соусом.",
-      "Добавь нарезанные помидоры и колбасу.",
-      "Посыпь тёртым сыром.",
-      "Выпекай при 180 °C около 15–20 минут."
-    ]
-  },
-
-  "Домашние наггетсы": {
-    time: "35 минут",
-    ingredients: [
-      "Куриное филе — 500 г",
-      "Яйца — 2 шт.",
-      "Панировочные сухари — 100 г",
-      "Мука — 3 ст. л.",
-      "Соль — по вкусу"
-    ],
-    steps: [
-      "Нарежь куриное филе небольшими кусочками.",
-      "Подготовь три тарелки: с мукой, взбитыми яйцами и сухарями.",
-      "Обваляй кусочки сначала в муке, затем в яйце и сухарях.",
-      "Выложи на противень с пергаментом.",
-      "Запекай при 200 °C около 20–25 минут до готовности."
-    ]
-  },
-
-  "Капкейки": {
-    time: "40 минут",
-    ingredients: [
-      "Мука — 200 г",
-      "Сахар — 120 г",
-      "Яйца — 2 шт.",
-      "Молоко — 100 мл",
-      "Сливочное масло — 100 г",
-      "Разрыхлитель — 1 ч. л."
-    ],
-    steps: [
-      "Взбей мягкое сливочное масло с сахаром.",
-      "Добавь яйца и молоко.",
-      "Вмешай муку с разрыхлителем.",
-      "Разложи тесто по формочкам.",
-      "Выпекай при 180 °C около 20–25 минут."
-    ]
-  },
-
-  "Фруктовые шпажки": {
-    time: "15 минут",
-    ingredients: [
-      "Бананы — 2 шт.",
-      "Клубника — 200 г",
-      "Виноград — 200 г",
-      "Киви — 2 шт.",
-      "Шпажки — 10 шт."
-    ],
-    steps: [
-      "Вымой фрукты.",
-      "Очисти бананы и киви.",
-      "Нарежь фрукты небольшими кусочками.",
-      "Аккуратно нанизывай кусочки на шпажки.",
-      "Выложи на красивую тарелку."
-    ]
-  }
+const holidayMenus={
+'Новый год':{title:'🎄 Новогодний стол',salad:['Оливье','Сельдь под шубой','Салат с курицей и ананасом'],snacks:['Фаршированные яйца','Рулет из лаваша','Бутерброды с красной рыбой'],hot:['Запечённая курица с картофелем','Мясо по-французски'],dessert:['Мандариновый десерт','Торт','Фруктовая тарелка']},
+'Рождество':{title:'✨ Рождественский стол',salad:['Винегрет','Овощной салат','Салат с курицей'],snacks:['Домашние пирожки','Фаршированные яйца'],hot:['Запечённая курица','Рыба с овощами'],dessert:['Кутья','Пирог с яблоками','Компот']},
+'День рождения взрослого':{title:'🎂 Праздничный стол для взрослых',salad:['Оливье','Цезарь с курицей','Салат с грибами'],snacks:['Рулетики из баклажанов','Тарталетки','Мясная нарезка'],hot:['Мясо с картофелем в духовке','Запечённая рыба'],dessert:['Торт','Чизкейк','Фруктовая тарелка']},
+'Детский день рождения':{title:'🎈 Весёлый детский праздник',salad:['Фруктовый салат','Салат с курицей','Овощные стаканчики'],snacks:['Мини-бутерброды','Канапе с сыром и овощами','Домашние мини-пиццы'],hot:['Куриные шашлычки','Картофельные дольки','Домашние наггетсы'],dessert:['Капкейки','Фруктовые шпажки','Желейный десерт'],extra:['Морс','Компот','Домашний лимонад']},
+'Пасха':{title:'🐣 Пасхальный стол',salad:['Весенний салат','Овощной салат'],snacks:['Крашеные яйца','Фаршированные яйца','Сырная тарелка'],hot:['Запечённая курица','Мясо с овощами'],dessert:['Пасхальный кулич','Творожная пасха']},
+'8 Марта':{title:'🌷 Праздничный стол к 8 Марта',salad:['Салат с креветками','Цезарь','Салат с курицей'],snacks:['Тарталетки','Рулетики из лаваша'],hot:['Рыба в духовке','Курица с овощами'],dessert:['Клубничный десерт','Тирамису','Фруктовая тарелка']},
+'23 Февраля':{title:'🎖️ Праздничный стол к 23 Февраля',salad:['Оливье','Салат с мясом','Салат с грибами'],snacks:['Домашние бутерброды','Мясная нарезка'],hot:['Мясо по-французски','Запечённые рёбрышки'],dessert:['Шоколадный торт','Пирог']},
+'Масленица':{title:'🥞 Масленичная неделя',salad:['Овощной салат','Салат с курицей'],snacks:['Блины с сыром','Блины с ветчиной'],hot:['Блины с мясом','Блины с грибами'],dessert:['Блины с творогом','Блины с ягодами','Блины с мёдом']},
+'Пикник на природе':{title:'🌳 Меню для пикника',salad:['Овощной салат','Салат с кукурузой'],snacks:['Лаваш с начинкой','Мини-бутерброды'],hot:['Куриные шашлычки','Картофель на гриле'],dessert:['Фрукты','Кексы'],extra:['Домашний лимонад','Морс','Вода']},
+'Выпускной или школьный праздник':{title:'🎓 Праздничный стол для школьников',salad:['Овощные стаканчики','Фруктовый салат'],snacks:['Мини-бутерброды','Канапе','Мини-пиццы'],hot:['Куриные шашлычки','Мини-котлетки'],dessert:['Капкейки','Печенье','Фруктовые шпажки'],extra:['Компот','Морс','Домашний лимонад']},
+'Семейное застолье':{title:'❤️ Семейный праздничный стол',salad:['Оливье','Винегрет','Салат с курицей'],snacks:['Фаршированные яйца','Рулет из лаваша'],hot:['Курица с картофелем','Мясо с овощами'],dessert:['Домашний пирог','Творожный десерт','Фрукты']}
 };
-
-function openRecipe(name) {
-  const recipe = holidayRecipes[name];
-  const details = document.getElementById("recipeDetails");
-
-  if (!recipe) {
-    details.style.display = "block";
-    details.innerHTML = `
-      <h3>${name}</h3>
-      <p>Подробный рецепт скоро появится в приложении!</p>
-    `;
-    return;
-  }
-
-  details.style.display = "block";
-
-  let html = `
-    <div class="welcome">
-      <h2>🍽️ ${name}</h2>
-      <p>⏱ Время приготовления: ${recipe.time}</p>
-      <h3>🛒 Ингредиенты</h3>
-      <ul>
-  `;
-
-  recipe.ingredients.forEach(item => {
-    html += `<li>${item}</li>`;
-  });
-
-  html += `</ul><h3>👩‍🍳 Приготовление</h3><ol>`;
-
-  recipe.steps.forEach(step => {
-    html += `<li>${step}</li>`;
-  });
-
-  html += `
-          </ol>
-
-      <button onclick="addRecipeToShoppingList('${name}')">
-        🛒 Добавить ингредиенты в список покупок
-      </button>
-
-      <p id="shoppingMessage"></p>
-
-      <button onclick="document.getElementById('recipeDetails').style.display='none'">
-        Закрыть рецепт
-      </button>
-    </div>
-  `;
-
-  details.innerHTML = html;
-  details.scrollIntoView({ behavior: "smooth" });
-}
-
-function addRecipeToShoppingList(name) {
-  const recipe = holidayRecipes[name];
-
-  if (!recipe) {
-    alert("Рецепт не найден");
-    return;
-  }
-
-  let shoppingList = JSON.parse(
-    localStorage.getItem("vkusnoHolidayShoppingList") || "[]"
-  );
-
-  shoppingList = shoppingList.filter(
-    item => item.recipeName !== name
-  );
-
-  shoppingList.push({
-    recipeName: name,
-    ingredients: recipe.ingredients
-  });
-
-  localStorage.setItem(
-    "vkusnoHolidayShoppingList",
-    JSON.stringify(shoppingList)
-  );
-
-  renderShoppingList();
-
-  const message = document.getElementById("shoppingMessage");
-
-  if (message) {
-    message.innerHTML =
-      "✅ Ингредиенты рецепта «" + name +
-      "» добавлены в список покупок!";
-  }
-}
-
-
-function renderShoppingList() {
-  const container = document.getElementById("shoppingListContent");
-
-  if (!container) return;
-
-  const shoppingList = JSON.parse(
-    localStorage.getItem("vkusnoHolidayShoppingList") || "[]"
-  );
-
-  if (shoppingList.length === 0) {
-    container.innerHTML = "Список покупок пока пуст.";
-    return;
-  }
-
-  const departments = {
-    "🥩 Мясо и колбасные изделия": [],
-    "🥛 Молочные продукты": [],
-    "🥚 Яйца": [],
-    "🥕 Овощи и фрукты": [],
-    "🥫 Бакалея и выпечка": [],
-    "🧂 Соусы и специи": [],
-    "🧊 Замороженные продукты": [],
-    "🍢 Прочее": []
-  };
-
-  const categories = {
-    "куриное филе": "🥩 Мясо и колбасные изделия",
-    "колбаса": "🥩 Мясо и колбасные изделия",
-    "фарш": "🥩 Мясо и колбасные изделия",
-    "сыр": "🥛 Молочные продукты",
-    "молоко": "🥛 Молочные продукты",
-    "сливочное масло": "🥛 Молочные продукты",
-    "сметана": "🥛 Молочные продукты",
-    "яйца": "🥚 Яйца",
-    "помидоры": "🥕 Овощи и фрукты",
-    "бананы": "🥕 Овощи и фрукты",
-    "клубника": "🥕 Овощи и фрукты",
-    "виноград": "🥕 Овощи и фрукты",
-    "киви": "🥕 Овощи и фрукты",
-    "картофель": "🥕 Овощи и фрукты",
-    "огурцы": "🥕 Овощи и фрукты",
-    "яблоки": "🥕 Овощи и фрукты",
-    "мука": "🥫 Бакалея и выпечка",
-    "сахар": "🥫 Бакалея и выпечка",
-    "панировочные сухари": "🥫 Бакалея и выпечка",
-    "разрыхлитель": "🥫 Бакалея и выпечка",
-    "макароны": "🥫 Бакалея и выпечка",
-    "готовое слоёное тесто": "🧊 Замороженные продукты",
-    "томатный соус": "🧂 Соусы и специи",
-    "соль": "🧂 Соусы и специи"
-  };
-
-  const products = {};
-
-  shoppingList.forEach(recipe => {
-    recipe.ingredients.forEach(ingredient => {
-      const parts = ingredient.split("—");
-      const name = parts[0].trim();
-      const amount = parts[1] ? parts[1].trim() : "";
-      const key = name.toLowerCase();
-
-      if (!products[key]) {
-        products[key] = {
-          name: name,
-          amounts: []
-        };
-      }
-
-      if (amount) {
-        products[key].amounts.push(amount);
-      }
-    });
-  });
-
-  Object.values(products).forEach(product => {
-    const department =
-      categories[product.name.toLowerCase()] || "🍢 Прочее";
-
-    departments[department].push(product);
-  });
-
-  let html = "";
-
-  Object.entries(departments).forEach(([department, items]) => {
-    if (items.length === 0) return;
-
-    html += `<h3>${department}</h3>`;
-
-    items.forEach(product => {
-      const amount = product.amounts.length
-        ? " — " + product.amounts.join(" + ")
-        : "";
-
-      html += `
-        <p>
-          <label>
-            <input type="checkbox">
-            ${product.name}${amount}
-          </label>
-        </p>
-      `;
-    });
-  });
-
-  container.innerHTML = html;
-}
+function readStore(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch(e){return fallback}}
+function writeStore(key,value){localStorage.setItem(key,JSON.stringify(value))}
+function escapeHtml(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function showSection(id){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');if(id==='recipes')renderRecipeCatalog();if(id==='weekly')renderWeekly();if(id==='shopping')renderShopping();if(id==='pantry')renderPantry();if(id==='favorites')renderFavorites();if(id==='budget')renderBudget();window.scrollTo({top:0,behavior:'smooth'})}
+function renderRecipeCatalog(){document.getElementById('recipeCatalog').innerHTML=Object.keys(recipes).map(name=>`<div class="recipe-card"><h3>${escapeHtml(name)}</h3><div class="muted">⏱ ${recipes[name].time}</div><div class="actions"><button onclick="openRecipe('${escapeHtml(name)}')">Открыть рецепт</button><button class="secondary" onclick="toggleFavorite('${escapeHtml(name)}')">♡ В избранное</button></div></div>`).join('')}
+function openRecipe(name){const recipe=recipes[name],box=document.getElementById('recipeDetails');if(!recipe){box.style.display='block';box.innerHTML=`<h3>${escapeHtml(name)}</h3><p>Подробный рецепт скоро появится в каталоге.</p>`;return}box.style.display='block';box.innerHTML=`<h2>🍽️ ${escapeHtml(name)}</h2><p>⏱ Время приготовления: ${recipe.time}</p><h3>🛒 Ингредиенты</h3><ul>${recipe.ingredients.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul><h3>👩‍🍳 Приготовление</h3><ol>${recipe.steps.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ol><button onclick="addRecipeToShopping('${escapeHtml(name)}')">🛒 Добавить в список покупок</button><button class="secondary" onclick="addToWeekly('${escapeHtml(name)}')">📅 Добавить в меню на неделю</button>`;box.scrollIntoView({behavior:'smooth',block:'start'})}
+function parseIngredient(text){const parts=text.split('—');return{name:parts[0].trim(),amount:(parts[1]||'').trim()}}
+function addRecipeToShopping(name){const recipe=recipes[name];if(!recipe)return;const list=readStore(STORAGE.shopping,[]);recipe.ingredients.forEach(ingredient=>{const p=parseIngredient(ingredient);const exists=list.some(x=>x.name.toLowerCase()===p.name.toLowerCase()&&x.amount===p.amount&&!x.checked);if(!exists)list.push({id:String(Date.now())+'_'+Math.random().toString(36).slice(2),name:p.name,amount:p.amount,checked:false,source:name})});writeStore(STORAGE.shopping,list);renderShopping();alert('Ингредиенты рецепта «'+name+'» добавлены в список покупок!')}
+function addManualProduct(){const input=document.getElementById('manualProduct'),name=input.value.trim();if(!name)return;const list=readStore(STORAGE.shopping,[]);if(!list.some(p=>p.name.toLowerCase()===name.toLowerCase()&&!p.checked))list.push({id:String(Date.now()),name,amount:'',checked:false,source:'Вручную'});writeStore(STORAGE.shopping,list);input.value='';renderShopping()}
+function renderShopping(){const box=document.getElementById('shoppingListContent'),list=readStore(STORAGE.shopping,[]);if(!list.length){box.innerHTML='<div class="empty">Список покупок пока пуст. Добавь ингредиенты из рецепта или продукт вручную.</div>';return}box.innerHTML=list.map(p=>`<div class="list-row ${p.checked?'done':''}"><input type="checkbox" ${p.checked?'checked':''} onchange="toggleBought('${p.id}')"><div class="product-text"><b>${escapeHtml(p.name)}</b>${p.amount?`<div class="muted">${escapeHtml(p.amount)}</div>`:''}</div><button class="danger small" onclick="removeShopping('${p.id}')">Удалить</button></div>`).join('')}
+function toggleBought(id){const list=readStore(STORAGE.shopping,[]),p=list.find(x=>x.id===id);if(p)p.checked=!p.checked;writeStore(STORAGE.shopping,list);renderShopping()}
+function removeShopping(id){writeStore(STORAGE.shopping,readStore(STORAGE.shopping,[]).filter(p=>p.id!==id));renderShopping()}
+function clearChecked(){writeStore(STORAGE.shopping,readStore(STORAGE.shopping,[]).filter(p=>!p.checked));renderShopping()}
+function addPantryProduct(){const name=document.getElementById('pantryProduct').value.trim(),amount=document.getElementById('pantryAmount').value.trim();if(!name)return;const list=readStore(STORAGE.pantry,[]);if(!list.some(p=>p.name.toLowerCase()===name.toLowerCase()))list.push({id:String(Date.now()),name,amount});writeStore(STORAGE.pantry,list);document.getElementById('pantryProduct').value='';document.getElementById('pantryAmount').value='';renderPantry()}
+function renderPantry(){const box=document.getElementById('pantryContent'),list=readStore(STORAGE.pantry,[]);box.innerHTML=list.length?list.map(p=>`<div class="list-row"><div class="product-text"><b>${escapeHtml(p.name)}</b>${p.amount?`<div class="muted">${escapeHtml(p.amount)}</div>`:''}</div><button class="danger small" onclick="removePantry('${p.id}')">Удалить</button></div>`).join(''):'<div class="empty">Кладовая пока пуста.</div>'}
+function removePantry(id){writeStore(STORAGE.pantry,readStore(STORAGE.pantry,[]).filter(p=>p.id!==id));renderPantry()}
+const days=['Понедельник','Вторник','Среда','Четверг','Пятница','Суббота','Воскресенье'];
+function renderWeekly(){const week=readStore(STORAGE.weekly,{});document.getElementById('weeklyContent').innerHTML=days.map((day,i)=>`<div class="day-card"><b>${day}</b><select id="day_${i}"><option value="">— Выбери блюдо —</option>${Object.keys(recipes).map(name=>`<option value="${escapeHtml(name)}" ${week[day]===name?'selected':''}>${escapeHtml(name)}</option>`).join('')}</select></div>`).join('')+'<button onclick="saveWeekly()">Сохранить меню на неделю</button><p class="muted">Сохранение меню не добавляет ингредиенты в список покупок.</p>'}
+function saveWeekly(){const week={};days.forEach((day,i)=>{const value=document.getElementById('day_'+i).value;if(value)week[day]=value});writeStore(STORAGE.weekly,week);alert('Меню на неделю сохранено. Список покупок не изменён.')}
+function addToWeekly(name){const week=readStore(STORAGE.weekly,{}),day=days.find(d=>!week[d]);if(!day){alert('Все дни уже заполнены. Измени меню в соответствующем разделе.');return}week[day]=name;writeStore(STORAGE.weekly,week);alert(name+' добавлен(а) в меню: '+day+'. Покупки не изменены.')}
+function toggleFavorite(name){let list=readStore(STORAGE.favorites,[]);list=list.includes(name)?list.filter(x=>x!==name):[...list,name];writeStore(STORAGE.favorites,list);renderFavorites()}
+function renderFavorites(){const list=readStore(STORAGE.favorites,[]),box=document.getElementById('favoritesContent');box.innerHTML=list.length?list.map(name=>`<div class="recipe-card"><b>${escapeHtml(name)}</b><div class="actions"><button onclick="showSection('recipes');openRecipe('${escapeHtml(name)}')">Открыть</button><button class="danger" onclick="toggleFavorite('${escapeHtml(name)}')">Убрать</button></div></div>`).join(''):'<div class="empty">Пока нет избранных рецептов. Добавляй их из каталога.</div>'}
+function saveBudget(){const data={limit:Number(document.getElementById('budgetLimit').value)||0,spent:Number(document.getElementById('spentAmount').value)||0};writeStore(STORAGE.budget,data);renderBudget()}
+function renderBudget(){const data=readStore(STORAGE.budget,{limit:0,spent:0});document.getElementById('budgetLimit').value=data.limit||'';document.getElementById('spentAmount').value=data.spent||'';const rest=data.limit-data.spent;document.getElementById('budgetSummary').innerHTML=`<b>Остаток бюджета: ${rest.toLocaleString('ru-RU')} ₽</b><p class="muted">${data.limit?(rest>=0?'Ты укладываешься в бюджет.':'Бюджет превышен.'):'Укажи плановый бюджет.'}</p>`}
+function showHolidayMenu(){const search=document.getElementById('holidaySearch').value.trim(),guests=Number(document.getElementById('guests').value),result=document.getElementById('holidayResult'),holiday=Object.keys(holidayMenus).find(name=>name.toLowerCase()===search.toLowerCase());if(!holiday){result.style.display='block';result.textContent='Пожалуйста, выбери праздник из списка или введи его название точно.';return}if(!Number.isInteger(guests)||guests<1||guests>100){result.style.display='block';result.textContent='Укажи количество гостей от 1 до 100.';return}const menu=holidayMenus[holiday];let html=`<h3>${menu.title}</h3><p>Гостей: <b>${guests}</b></p>`;[['Салаты','🥗',menu.salad],['Закуски','🥪',menu.snacks],['Горячие блюда','🍗',menu.hot],['Десерты','🍰',menu.dessert],['Напитки и дополнения','🥤',menu.extra]].forEach(([title,emoji,dishes])=>{if(dishes?.length)html+=`<b>${emoji} ${title}:</b><ul>${dishes.map(d=>`<li><a href="#" onclick="openHolidayDish('${d.replace(/'/g,"\\'")}');return false">${escapeHtml(d)}</a></li>`).join('')}</ul>`});html+='<p>Выбери блюдо, чтобы посмотреть рецепт. Продукты добавляются в покупки только по отдельной кнопке в карточке рецепта.</p>';result.innerHTML=html;result.style.display='block'}
+function openHolidayDish(name){if(recipes[name]){showSection('recipes');openRecipe(name)}else alert('Подробный рецепт «'+name+'» пока не добавлен в каталог. Скоро пополним коллекцию!')}
+renderShopping();
 </script>
-
 </body>
 </html>
