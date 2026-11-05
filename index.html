@@ -468,7 +468,32 @@ function openRecipe(name) {
   details.innerHTML = html;
   details.scrollIntoView({ behavior: "smooth" });
 }
-  
+  function addRecipeToShoppingList(name) {
+  const recipe = holidayRecipes[name];
+
+  if (!recipe) return;
+
+  let shoppingList = JSON.parse(
+    localStorage.getItem("vkusnoHolidayShoppingList") || "[]"
+  );
+
+  shoppingList = shoppingList.filter(
+    item => item.recipeName !== name
+  );
+
+  shoppingList.push({
+    recipeName: name,
+    ingredients: recipe.ingredients
+  });
+
+  localStorage.setItem(
+    "vkusnoHolidayShoppingList",
+    JSON.stringify(shoppingList)
+  );
+
+  document.getElementById("shoppingMessage").innerHTML =
+    "✅ Ингредиенты рецепта «" + name + "» добавлены в список покупок!";
+}
 </script>
 
 </body>
