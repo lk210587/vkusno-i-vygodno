@@ -5,16 +5,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Рецепты — Вкусно и выгодно</title>
+
 <style>
 body {
   margin: 0;
   padding: 20px;
   font-family: Arial, sans-serif;
-  background: #f7f5ed;
+  background: #fffaf0;
   color: #344333;
 }
 h1 { text-align: center; }
-a { color: #55734e; }
+a { color: #55734e; text-decoration: none; }
 .search {
   width: 100%;
   box-sizing: border-box;
@@ -25,16 +26,32 @@ a { color: #55734e; }
   margin: 15px 0;
 }
 .recipe {
+  display: block;
   background: white;
   padding: 18px;
   margin: 14px 0;
   border-radius: 16px;
   box-shadow: 0 2px 8px #0000000d;
+  color: #344333;
+  transition: transform 0.2s;
+}
+.recipe:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px #00000018;
 }
 .recipe h2 { margin-top: 0; }
 .info { color: #78836f; font-size: 14px; }
+.open-recipe {
+  display: inline-block;
+  background: #f5c84c;
+  color: #443719;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: bold;
+}
 </style>
 </head>
+
 <body>
 
 <a href="index.html">← На главную</a>
@@ -46,6 +63,7 @@ a { color: #55734e; }
 placeholder="🔎 Найти рецепт..." oninput="filterRecipes()">
 
 <div id="recipes">
+
   <div class="recipe">
     <h2>🥞 Нежные сырники</h2>
     <p class="info">25 минут · 2 порции</p>
@@ -63,11 +81,20 @@ placeholder="🔎 Найти рецепт..." oninput="filterRecipes()">
     <p class="info">20 минут · 2 порции</p>
     <p>Куриное филе, огурец, помидоры, листья салата.</p>
   </div>
+
+  <a class="recipe" href="recipe.html">
+    <h2>🍗 Куриная запеканка с картофелем</h2>
+    <p class="info">55 минут · 4 порции · 135 ккал на 100 г</p>
+    <p>Картофель, куриное филе, лук, сметана, сыр.</p>
+    <span class="open-recipe">Посмотреть рецепт →</span>
+  </a>
+
 </div>
 
 <script>
 function filterRecipes() {
   const query = document.getElementById('search').value.toLowerCase();
+
   document.querySelectorAll('.recipe').forEach(recipe => {
     recipe.style.display = recipe.innerText.toLowerCase().includes(query)
       ? 'block' : 'none';
