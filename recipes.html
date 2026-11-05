@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Рецепты — Вкусно и выгодно</title>
+<style>
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: #f7f5ed;
+  color: #344333;
+}
+h1 { text-align: center; }
+a { color: #55734e; }
+.search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px;
+  border: 1px solid #ccd5c3;
+  border-radius: 12px;
+  font-size: 16px;
+  margin: 15px 0;
+}
+.recipe {
+  background: white;
+  padding: 18px;
+  margin: 14px 0;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #0000000d;
+}
+.recipe h2 { margin-top: 0; }
+.info { color: #78836f; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<a href="index.html">← На главную</a>
+
+<h1>🥑 Каталог рецептов</h1>
+<p style="text-align:center">Вкусные идеи на каждый день</p>
+
+<input class="search" id="search"
+placeholder="🔎 Найти рецепт..." oninput="filterRecipes()">
+
+<div id="recipes">
+  <div class="recipe">
+    <h2>🥞 Нежные сырники</h2>
+    <p class="info">25 минут · 2 порции</p>
+    <p>Творог, яйцо, мука, сахар, щепотка соли.</p>
+  </div>
+
+  <div class="recipe">
+    <h2>🍲 Крем-суп из тыквы</h2>
+    <p class="info">40 минут · 4 порции</p>
+    <p>Тыква, картофель, морковь, лук, сливки.</p>
+  </div>
+
+  <div class="recipe">
+    <h2>🥗 Салат с курицей</h2>
+    <p class="info">20 минут · 2 порции</p>
+    <p>Куриное филе, огурец, помидоры, листья салата.</p>
+  </div>
+</div>
+
+<script>
+function filterRecipes() {
+  const query = document.getElementById('search').value.toLowerCase();
+  document.querySelectorAll('.recipe').forEach(recipe => {
+    recipe.style.display = recipe.innerText.toLowerCase().includes(query)
+      ? 'block' : 'none';
+  });
+}
+</script>
+
+</body>
+</html>
