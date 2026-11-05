@@ -451,7 +451,14 @@ function openRecipe(name) {
   });
 
   html += `
-      </ol>
+          </ol>
+
+      <button onclick="addRecipeToShoppingList('${name}')">
+        🛒 Добавить ингредиенты в список покупок
+      </button>
+
+      <p id="shoppingMessage"></p>
+
       <button onclick="document.getElementById('recipeDetails').style.display='none'">
         Закрыть рецепт
       </button>
