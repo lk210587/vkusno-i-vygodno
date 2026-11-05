@@ -474,7 +474,7 @@ function openRecipe(name) {
   details.innerHTML = html;
   details.scrollIntoView({ behavior: "smooth" });
 }
- function addRecipeToShoppingList(name) {
+function addRecipeToShoppingList(name) {
   const recipe = holidayRecipes[name];
 
   if (!recipe) {
@@ -498,8 +498,16 @@ function openRecipe(name) {
   localStorage.setItem(
     "vkusnoHolidayShoppingList",
     JSON.stringify(shoppingList)
-    renderShoppingList();
   );
+
+  renderShoppingList();
+
+  const message = document.getElementById("shoppingMessage");
+
+  if (message) {
+    message.innerHTML = "✅ Ингредиенты добавлены в список покупок!";
+  }
+}
 
   const message = document.getElementById("shoppingMessage");
 
