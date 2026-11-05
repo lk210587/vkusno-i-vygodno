@@ -474,6 +474,7 @@ function openRecipe(name) {
   details.innerHTML = html;
   details.scrollIntoView({ behavior: "smooth" });
 }
+
 function addRecipeToShoppingList(name) {
   const recipe = holidayRecipes[name];
 
@@ -500,9 +501,21 @@ function addRecipeToShoppingList(name) {
     JSON.stringify(shoppingList)
   );
 
-  
+  renderShoppingList();
+
+  const message = document.getElementById("shoppingMessage");
+
+  if (message) {
+    message.innerHTML =
+      "✅ Ингредиенты рецепта «" + name +
+      "» добавлены в список покупок!";
+  }
+}
+
+
 function renderShoppingList() {
   const container = document.getElementById("shoppingListContent");
+
   if (!container) return;
 
   const shoppingList = JSON.parse(
@@ -562,7 +575,10 @@ function renderShoppingList() {
       const key = name.toLowerCase();
 
       if (!products[key]) {
-        products[key] = { name, amounts: [] };
+        products[key] = {
+          name: name,
+          amounts: []
+        };
       }
 
       if (amount) {
@@ -572,8 +588,8 @@ function renderShoppingList() {
   });
 
   Object.values(products).forEach(product => {
-    const key = product.name.toLowerCase();
-    const department = categories[key] || "🍢 Прочее";
+    const department =
+      categories[product.name.toLowerCase()] || "🍢 Прочее";
 
     departments[department].push(product);
   });
@@ -602,67 +618,6 @@ function renderShoppingList() {
   });
 
   container.innerHTML = html;
-}
-
-
-  const message = document.getElementById("shoppingMessage");
-
-  if (message) {
-    message.innerHTML = "✅ Ингредиенты добавлены в список покупок!";
-  }
-}
-
-  const message = document.getElementById("shoppingMessage");
-
-  if (message) {
-    message.innerHTML =
-      "✅ Ингредиенты рецепта «" + name + "» добавлены в список покупок!";
-  } else {
-    alert("Ингредиенты добавлены в список покупок!");
-  }
-
-function renderShoppingList() {
-  const container = document.getElementById("shoppingListContent");
-
-  if (!container) return;
-
-  const shoppingList = JSON.parse(
-    localStorage.getItem("vkusnoHolidayShoppingList") || "[]"
-  );
-
-  if (shoppingList.length === 0) {
-    container.innerHTML = "Список покупок пока пуст.";
-    return;
-  }
-
-  const products = {};
-
-  shoppingList.forEach(recipe => {
-    recipe.ingredients.forEach(ingredient => {
-      const product = ingredient.trim();
-      const key = product.toLowerCase();
-
-      if (!products[key]) {
-        products[key] = product;
-      }
-    });
-  });
-
-  let html = "";
-
-  Object.values(products).forEach((product, index) => {
-    html += `
-      <p>
-        <label>
-          <input type="checkbox">
-          ${product}
-        </label>
-      </p>
-    `;
-  });
-
-  container.innerHTML = html;
-}
 }
 </script>
 
